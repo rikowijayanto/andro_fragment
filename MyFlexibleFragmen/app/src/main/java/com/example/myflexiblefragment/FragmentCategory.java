@@ -50,7 +50,6 @@ public class FragmentCategory extends Fragment implements View.OnClickListener {
             mDetailCategoryFragment.setArguments(mBundle);
             mDetailCategoryFragment.setDescription(Description);
 
-
             FragmentManager mFragmentManager = getFragmentManager();
 
             if (mFragmentManager != null) {

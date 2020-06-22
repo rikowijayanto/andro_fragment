@@ -5,12 +5,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -70,10 +72,22 @@ public class DetailCategoryFragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        String categoryName = getArguments().getString(EXTRA_NAME);
-        tvCategoryName.setText(categoryName);
-        tvCategoryDescription.setText(getDescription());
+
+        if (savedInstanceState != null) {
+            String descFromBundle = savedInstanceState.getString(EXTRA_DESCRIPTION);
+            setDescription(descFromBundle);
+        }
+
+        if (getArguments() != null) {
+            String categoryName = getArguments().getString(EXTRA_NAME);
+            tvCategoryName.setText(categoryName);
+            tvCategoryDescription.setText(getDescription());
+
+        }
     }
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -84,8 +98,23 @@ public class DetailCategoryFragment extends Fragment implements View.OnClickList
                 break;
 
             case R.id.btn_show_dialog:
+
+                OptionDialogFragment mOptionDialogFragment = new OptionDialogFragment();
+                FragmentManager mFragmentManager = getChildFragmentManager();
+
+                //mFragmentManager.beginTransaction().show(mOptionDialogFragment);
+
+                mOptionDialogFragment.show(mFragmentManager, OptionDialogFragment.class.getSimpleName());
                 break;
 
         }
     }
+
+
+    OptionDialogFragment.OnOptionDialogListener optionDialogListener = new OptionDialogFragment.OnOptionDialogListener() {
+        @Override
+        public void onOptionChosen(String text) {
+            Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+        }
+    };
 }
